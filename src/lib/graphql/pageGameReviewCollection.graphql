@@ -1,0 +1,13 @@
+query pageGameReviewCollection(
+  $locale: String
+  $preview: Boolean
+  $limit: Int
+  $order: [PageGameReviewOrder]
+  $where: PageGameReviewFilter
+) {
+  pageGameReviewCollection(limit: $limit, locale: $locale, preview: $preview, order: $order where: $where) {
+    items {
+      ...PageGameReviewFields
+    }
+  }
+}

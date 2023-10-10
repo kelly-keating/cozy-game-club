@@ -10,6 +10,7 @@ import { client, previewClient } from '@src/lib/client'
 import { revalidateDuration } from '@src/pages/utils/constants'
 
 const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+  console.log(props)
   const page = useContentfulLiveUpdates(props.page)
   const posts = useContentfulLiveUpdates(props.posts)
 
@@ -49,6 +50,16 @@ export const getStaticProps: GetStaticProps = async ({ draftMode: preview }) => 
     })
     const posts = blogPostsData.pageBlogPostCollection?.items
 
+    const gameReviewData = await gqlClient.pageGameReviewCollection({
+      limit: 6,
+      order: PageGameReviewOrder.PublishedDateDesc,
+      where: {
+        slug_not: page?.featuredGameReview?.slug,
+      },
+      preview,
+    })
+    const reviews = gameReviewData.pageBlogPostCollection?.items
+
     if (!page) {
       return {
         revalidate: revalidateDuration,
@@ -62,6 +73,7 @@ export const getStaticProps: GetStaticProps = async ({ draftMode: preview }) => 
         previewActive: !!preview,
         page,
         posts,
+        reviews,
       },
     }
   } catch {

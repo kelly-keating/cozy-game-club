@@ -1,0 +1,66 @@
+fragment ReferencePageGameReviewFields on PageGameReview {
+  __typename
+  sys {
+    id
+    spaceId
+  }
+  slug
+  author {
+    ...AuthorFields
+  }
+  publishedDate
+  title
+  shortDescription
+  featuredImage {
+    ...ImageFields
+  }
+}
+
+fragment PageGameReviewFields on PageGameReview {
+  __typename
+  sys {
+    id
+    spaceId
+  }
+  internalName
+  seoFields {
+    ...SeoFields
+  }
+  slug
+  author {
+    ...AuthorFields
+  }
+  publishedDate
+  title
+  shortDescription
+  featuredImage {
+    ...ImageFields
+  }
+  verdict
+  ratings {
+    ...RatingsFields
+  }
+  content {
+    json
+    links {
+      entries {
+        block {
+          ...RichImageFields
+        }
+      }
+    }
+  }
+  relatedGameReviews(limit: 2) {
+    items {
+      ...ReferencePageGameReviewFields
+    }
+  }
+}
+
+query pageGameReview($slug: String!, $locale: String, $preview: Boolean) {
+  pageGameReviewCollection(limit: 1, where: { slug: $slug }, locale: $locale, preview: $preview) {
+    items {
+      ...PageGameReviewFields
+    }
+  }
+}

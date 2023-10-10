@@ -1,4 +1,12 @@
 fragment sitemapPagesFields on Query {
+  pageGameReviewCollection(limit: 100, locale: $locale) {
+    items {
+      slug
+      sys {
+        publishedAt
+      }
+    }
+  }
   pageBlogPostCollection(limit: 100, locale: $locale) {
     items {
       slug

@@ -1,0 +1,8 @@
+fragment RatingFields on ComponentRating {
+  __typename
+  sys {
+    id
+  }
+  title
+  value
+}
