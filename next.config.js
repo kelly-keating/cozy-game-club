@@ -3,7 +3,6 @@ const nextComposePlugins = require('next-compose-plugins');
 
 const headers = require('./config/headers');
 const plugins = require('./config/plugins');
-const { i18n } = require('./next-i18next.config.js');
 
 /**
  * https://github.com/cyrilwanner/next-compose-plugins/issues/59
@@ -15,7 +14,6 @@ const { withPlugins } = nextComposePlugins.extend(() => ({}));
  * documentation: https://nextjs.org/docs/api-reference/next.config.js/introduction
  */
 module.exports = withPlugins(plugins, {
-  i18n,
   /**
    * add the environment variables you would like exposed to the client here
    * documentation: https://nextjs.org/docs/api-reference/next.config.js/environment-variables
