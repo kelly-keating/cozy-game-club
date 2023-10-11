@@ -37,9 +37,9 @@ fragment PageGameReviewFields on PageGameReview {
     ...ImageFields
   }
   verdict
-  ratings {
-    ...RatingsFields
-  }
+  # ratings {
+  #   ...RatingFields
+  # }
   content {
     json
     links {
@@ -50,11 +50,11 @@ fragment PageGameReviewFields on PageGameReview {
       }
     }
   }
-  relatedGameReviews(limit: 2) {
-    items {
-      ...ReferencePageGameReviewFields
-    }
-  }
+  # relatedGameReviews(limit: 2) {
+  #   items {
+  #     ...ReferencePageGameReviewFields
+  #   }
+  # }
 }
 
 query pageGameReview($slug: String!, $locale: String, $preview: Boolean) {

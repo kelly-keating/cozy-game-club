@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ArticleHero, ArticleTileGrid } from '@src/components/features/article'
 import { SeoFields } from '@src/components/features/seo'
 import { Container } from '@src/components/shared/container'
-import { PageBlogPostOrder } from '@src/lib/__generated/sdk'
+import { PageBlogPostOrder, PageGameReviewOrder } from '@src/lib/__generated/sdk'
 import { client, previewClient } from '@src/lib/client'
 import { revalidateDuration } from '@src/pages/utils/constants'
 
@@ -36,9 +36,10 @@ const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 export const getStaticProps: GetStaticProps = async ({ draftMode: preview }) => {
   try {
     const gqlClient = preview ? previewClient : client
-
     const landingPageData = await gqlClient.pageLanding({ preview })
+
     const page = landingPageData.pageLandingCollection?.items[0]
+    if (!page) throw new Error("Couldn't find page")
 
     const blogPostsData = await gqlClient.pageBlogPostCollection({
       limit: 6,
@@ -53,19 +54,13 @@ export const getStaticProps: GetStaticProps = async ({ draftMode: preview }) => 
     const gameReviewData = await gqlClient.pageGameReviewCollection({
       limit: 6,
       order: PageGameReviewOrder.PublishedDateDesc,
-      where: {
-        slug_not: page?.featuredGameReview?.slug,
-      },
+      // where: {
+      //   slug_not: page?.featuredGameReview?.slug,
+      // },
       preview,
     })
-    const reviews = gameReviewData.pageBlogPostCollection?.items
+    const reviews = gameReviewData.pageGameReviewCollection?.items
 
-    if (!page) {
-      return {
-        revalidate: revalidateDuration,
-        notFound: true,
-      }
-    }
 
     return {
       revalidate: revalidateDuration,
