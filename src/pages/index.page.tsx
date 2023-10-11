@@ -5,29 +5,28 @@ import Link from 'next/link'
 import { ArticleHero, ArticleTileGrid } from '@src/components/features/article'
 import { SeoFields } from '@src/components/features/seo'
 import { Container } from '@src/components/shared/container'
-import { PageBlogPostOrder, PageGameReviewOrder } from '@src/lib/__generated/sdk'
+import { PageGameReviewOrder } from '@src/lib/__generated/sdk'
 import { client, previewClient } from '@src/lib/client'
 import { revalidateDuration } from '@src/pages/utils/constants'
 
 const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log(props)
   const page = useContentfulLiveUpdates(props.page)
-  const posts = useContentfulLiveUpdates(props.posts)
+  const reviews = useContentfulLiveUpdates(props.reviews)
 
-  if (!page?.featuredBlogPost || !posts) return
+  if (!page?.featuredReview || !reviews) return
 
   return (
     <>
       {page.seoFields && <SeoFields {...page.seoFields} />}
       <Container>
-        <Link href={`/${page.featuredBlogPost.slug}`}>
-          <ArticleHero article={page.featuredBlogPost} />
+        <Link href={`/${page.featuredReview.slug}`}>
+          <ArticleHero article={page.featuredReview} />
         </Link>
       </Container>
 
       <Container className="my-8  md:mb-10 lg:mb-16">
-        <h2 className="mb-4 md:mb-6">Latest articles</h2>
-        <ArticleTileGrid className="md:grid-cols-2 lg:grid-cols-3" articles={posts} />
+        <h2 className="mb-4 md:mb-6">Latest game reviews</h2>
+        <ArticleTileGrid className="md:grid-cols-2 lg:grid-cols-3" articles={reviews} />
       </Container>
     </>
   )
@@ -41,22 +40,12 @@ export const getStaticProps: GetStaticProps = async ({ draftMode: preview }) => 
     const page = landingPageData.pageLandingCollection?.items[0]
     if (!page) throw new Error("Couldn't find page")
 
-    const blogPostsData = await gqlClient.pageBlogPostCollection({
-      limit: 6,
-      order: PageBlogPostOrder.PublishedDateDesc,
-      where: {
-        slug_not: page?.featuredBlogPost?.slug,
-      },
-      preview,
-    })
-    const posts = blogPostsData.pageBlogPostCollection?.items
-
     const gameReviewData = await gqlClient.pageGameReviewCollection({
-      limit: 6,
+      limit: 10,
       order: PageGameReviewOrder.PublishedDateDesc,
-      // where: {
-      //   slug_not: page?.featuredGameReview?.slug,
-      // },
+      where: {
+        slug_not: page?.featuredReview?.slug,
+      },
       preview,
     })
     const reviews = gameReviewData.pageGameReviewCollection?.items
@@ -67,7 +56,6 @@ export const getStaticProps: GetStaticProps = async ({ draftMode: preview }) => 
       props: {
         previewActive: !!preview,
         page,
-        posts,
         reviews,
       },
     }

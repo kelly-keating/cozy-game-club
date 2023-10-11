@@ -8,19 +8,19 @@ import { client, previewClient } from '@src/lib/client'
 import { revalidateDuration } from '@src/pages/utils/constants'
 
 const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const blogPost = useContentfulLiveUpdates(props.blogPost)
-  const relatedPosts = blogPost?.relatedBlogPostsCollection?.items
+  const gameReview = useContentfulLiveUpdates(props.gameReview)
+  const relatedPosts = gameReview?.relatedGameReviewsCollection?.items
 
-  if (!blogPost || !relatedPosts) return null;
+  if (!gameReview || !relatedPosts) return null
 
   return (
     <>
-      {blogPost.seoFields && <SeoFields {...blogPost.seoFields} />}
+      {gameReview.seoFields && <SeoFields {...gameReview.seoFields} />}
       <Container>
-        <ArticleHero article={blogPost} isFeatured={props.isFeatured} isReversedLayout={true} />
+        <ArticleHero article={gameReview} isFeatured={props.isFeatured} isReversedLayout={true} />
       </Container>
       <Container className="mt-8 max-w-4xl">
-        <ArticleContent article={blogPost} />
+        <ArticleContent article={gameReview} />
       </Container>
       {relatedPosts && (
         <Container className="mt-8 max-w-5xl">
@@ -29,8 +29,8 @@ const Page = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         </Container>
       )}
     </>
-  );
-};
+  )
+}
 
 export const getStaticProps: GetStaticProps = async ({ params, draftMode: preview }) => {
   if (!params?.slug) {
@@ -40,54 +40,54 @@ export const getStaticProps: GetStaticProps = async ({ params, draftMode: previe
     }
   }
 
-  const gqlClient = preview ? previewClient : client;
+  const gqlClient = preview ? previewClient : client
 
   try {
-    const [blogPageData, landingPageData] = await Promise.all([
-      gqlClient.pageBlogPost({ slug: params.slug.toString(), preview }),
+    const [gameReviewData, landingPageData] = await Promise.all([
+      gqlClient.pageGameReview({ slug: params.slug.toString(), preview }),
       gqlClient.pageLanding({ preview }),
-    ]);
+    ])
 
-    const blogPost = blogPageData.pageBlogPostCollection?.items[0];
-    const landingPage = landingPageData.pageLandingCollection?.items[0];
+    const gameReview = gameReviewData.pageGameReviewCollection?.items[0]
+    const landingPage = landingPageData.pageLandingCollection?.items[0]
 
-    const isFeatured = landingPage?.featuredBlogPost?.slug === blogPost?.slug;
+    const isFeatured = landingPage?.featuredReview?.slug === gameReview?.slug
 
-    if (!blogPost) {
+    if (!gameReview) {
       return {
         notFound: true,
         revalidate: revalidateDuration,
-      };
+      }
     }
 
     return {
       revalidate: revalidateDuration,
       props: {
         previewActive: !!preview,
-        blogPost,
+        gameReview,
         isFeatured,
       },
-    };
+    }
   } catch {
     return {
       notFound: true,
       revalidate: revalidateDuration,
-    };
+    }
   }
-};
+}
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const dataPerLocale = await Promise.all(
-        ['en-US'].map(locale => client.pageBlogPostCollection({ locale, limit: 100 })),
+        ['en-US'].map(locale => client.pageGameReviewCollection({ locale, limit: 100 })),
       )
 
   const paths = dataPerLocale
     .flatMap((data) =>
-      data.pageBlogPostCollection?.items.map(blogPost =>
-        blogPost?.slug
+      data.pageGameReviewCollection?.items.map(gameReview =>
+        gameReview?.slug
           ? {
               params: {
-                slug: blogPost.slug,
+                slug: gameReview.slug,
               }
             }
           : undefined,

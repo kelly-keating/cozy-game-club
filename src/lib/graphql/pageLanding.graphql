@@ -8,12 +8,9 @@ fragment PageLandingFields on PageLanding {
   seoFields {
     ...SeoFields
   }
-  featuredBlogPost {
-    ...ReferencePageBlogPostFields
+  featuredReview {
+    ...ReferencePageGameReviewFields
   }
-  # featuredGameReview {
-  #   ...ReferencePageGameReviewFields
-  # }
 }
 
 query pageLanding($locale: String, $preview: Boolean) {

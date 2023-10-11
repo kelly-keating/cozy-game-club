@@ -916,7 +916,6 @@ input PageBlogPostFilter {
 type PageBlogPostLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   pageBlogPostCollection(limit: Int = 100, locale: String, order: [PageBlogPostLinkingCollectionsPageBlogPostCollectionOrder], preview: Boolean, skip: Int = 0): PageBlogPostCollection
-  pageLandingCollection(limit: Int = 100, locale: String, order: [PageBlogPostLinkingCollectionsPageLandingCollectionOrder], preview: Boolean, skip: Int = 0): PageLandingCollection
 }
 
 enum PageBlogPostLinkingCollectionsPageBlogPostCollectionOrder {
@@ -936,19 +935,6 @@ enum PageBlogPostLinkingCollectionsPageBlogPostCollectionOrder {
   sys_publishedVersion_DESC
   title_ASC
   title_DESC
-}
-
-enum PageBlogPostLinkingCollectionsPageLandingCollectionOrder {
-  internalName_ASC
-  internalName_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
 }
 
 enum PageBlogPostOrder {
@@ -1116,6 +1102,7 @@ input PageGameReviewFilter {
 type PageGameReviewLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   pageGameReviewCollection(limit: Int = 100, locale: String, order: [PageGameReviewLinkingCollectionsPageGameReviewCollectionOrder], preview: Boolean, skip: Int = 0): PageGameReviewCollection
+  pageLandingCollection(limit: Int = 100, locale: String, order: [PageGameReviewLinkingCollectionsPageLandingCollectionOrder], preview: Boolean, skip: Int = 0): PageLandingCollection
 }
 
 enum PageGameReviewLinkingCollectionsPageGameReviewCollectionOrder {
@@ -1135,6 +1122,19 @@ enum PageGameReviewLinkingCollectionsPageGameReviewCollectionOrder {
   sys_publishedVersion_DESC
   title_ASC
   title_DESC
+}
+
+enum PageGameReviewLinkingCollectionsPageLandingCollectionOrder {
+  internalName_ASC
+  internalName_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 enum PageGameReviewOrder {
@@ -1209,7 +1209,7 @@ To have an entry point for the app (e.g. Homepage) [See type definition](https:/
 """
 type PageLanding implements Entry {
   contentfulMetadata: ContentfulMetadata!
-  featuredBlogPost(locale: String, preview: Boolean, where: PageBlogPostFilter): PageBlogPost
+  featuredReview(locale: String, preview: Boolean, where: PageGameReviewFilter): PageGameReview
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): PageLandingLinkingCollections
   seoFields(locale: String, preview: Boolean, where: ComponentSeoFilter): ComponentSeo
@@ -1227,8 +1227,8 @@ input PageLandingFilter {
   AND: [PageLandingFilter]
   OR: [PageLandingFilter]
   contentfulMetadata: ContentfulMetadataFilter
-  featuredBlogPost: cfPageBlogPostNestedFilter
-  featuredBlogPost_exists: Boolean
+  featuredReview: cfPageGameReviewNestedFilter
+  featuredReview_exists: Boolean
   internalName: String
   internalName_contains: String
   internalName_exists: Boolean

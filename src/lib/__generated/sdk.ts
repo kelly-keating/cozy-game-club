@@ -1302,7 +1302,6 @@ export type PageBlogPostLinkingCollections = {
   __typename?: 'PageBlogPostLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
   pageBlogPostCollection?: Maybe<PageBlogPostCollection>;
-  pageLandingCollection?: Maybe<PageLandingCollection>;
 };
 
 
@@ -1318,15 +1317,6 @@ export type PageBlogPostLinkingCollectionsPageBlogPostCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   locale?: InputMaybe<Scalars['String']>;
   order?: InputMaybe<Array<InputMaybe<PageBlogPostLinkingCollectionsPageBlogPostCollectionOrder>>>;
-  preview?: InputMaybe<Scalars['Boolean']>;
-  skip?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type PageBlogPostLinkingCollectionsPageLandingCollectionArgs = {
-  limit?: InputMaybe<Scalars['Int']>;
-  locale?: InputMaybe<Scalars['String']>;
-  order?: InputMaybe<Array<InputMaybe<PageBlogPostLinkingCollectionsPageLandingCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']>;
   skip?: InputMaybe<Scalars['Int']>;
 };
@@ -1348,19 +1338,6 @@ export enum PageBlogPostLinkingCollectionsPageBlogPostCollectionOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
   TitleAsc = 'title_ASC',
   TitleDesc = 'title_DESC'
-}
-
-export enum PageBlogPostLinkingCollectionsPageLandingCollectionOrder {
-  InternalNameAsc = 'internalName_ASC',
-  InternalNameDesc = 'internalName_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
 export enum PageBlogPostOrder {
@@ -1628,6 +1605,7 @@ export type PageGameReviewLinkingCollections = {
   __typename?: 'PageGameReviewLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
   pageGameReviewCollection?: Maybe<PageGameReviewCollection>;
+  pageLandingCollection?: Maybe<PageLandingCollection>;
 };
 
 
@@ -1643,6 +1621,15 @@ export type PageGameReviewLinkingCollectionsPageGameReviewCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   locale?: InputMaybe<Scalars['String']>;
   order?: InputMaybe<Array<InputMaybe<PageGameReviewLinkingCollectionsPageGameReviewCollectionOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type PageGameReviewLinkingCollectionsPageLandingCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  locale?: InputMaybe<Scalars['String']>;
+  order?: InputMaybe<Array<InputMaybe<PageGameReviewLinkingCollectionsPageLandingCollectionOrder>>>;
   preview?: InputMaybe<Scalars['Boolean']>;
   skip?: InputMaybe<Scalars['Int']>;
 };
@@ -1664,6 +1651,19 @@ export enum PageGameReviewLinkingCollectionsPageGameReviewCollectionOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
   TitleAsc = 'title_ASC',
   TitleDesc = 'title_DESC'
+}
+
+export enum PageGameReviewLinkingCollectionsPageLandingCollectionOrder {
+  InternalNameAsc = 'internalName_ASC',
+  InternalNameDesc = 'internalName_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
 export enum PageGameReviewOrder {
@@ -1739,7 +1739,7 @@ export enum PageGameReviewRelatedGameReviewsCollectionOrder {
 export type PageLanding = Entry & {
   __typename?: 'PageLanding';
   contentfulMetadata: ContentfulMetadata;
-  featuredBlogPost?: Maybe<PageBlogPost>;
+  featuredReview?: Maybe<PageGameReview>;
   internalName?: Maybe<Scalars['String']>;
   linkedFrom?: Maybe<PageLandingLinkingCollections>;
   seoFields?: Maybe<ComponentSeo>;
@@ -1748,10 +1748,10 @@ export type PageLanding = Entry & {
 
 
 /** To have an entry point for the app (e.g. Homepage) [See type definition](https://app.contentful.com/spaces/9jacbf73bzbb/content_types/pageLanding) */
-export type PageLandingFeaturedBlogPostArgs = {
+export type PageLandingFeaturedReviewArgs = {
   locale?: InputMaybe<Scalars['String']>;
   preview?: InputMaybe<Scalars['Boolean']>;
-  where?: InputMaybe<PageBlogPostFilter>;
+  where?: InputMaybe<PageGameReviewFilter>;
 };
 
 
@@ -1786,8 +1786,8 @@ export type PageLandingFilter = {
   AND?: InputMaybe<Array<InputMaybe<PageLandingFilter>>>;
   OR?: InputMaybe<Array<InputMaybe<PageLandingFilter>>>;
   contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
-  featuredBlogPost?: InputMaybe<CfPageBlogPostNestedFilter>;
-  featuredBlogPost_exists?: InputMaybe<Scalars['Boolean']>;
+  featuredReview?: InputMaybe<CfPageGameReviewNestedFilter>;
+  featuredReview_exists?: InputMaybe<Scalars['Boolean']>;
   internalName?: InputMaybe<Scalars['String']>;
   internalName_contains?: InputMaybe<Scalars['String']>;
   internalName_exists?: InputMaybe<Scalars['Boolean']>;
@@ -2365,9 +2365,9 @@ export type PageGameReviewCollectionQuery = { __typename?: 'Query', pageGameRevi
 export type PageLandingFieldsFragment = { __typename: 'PageLanding', internalName?: string | null, sys: { __typename?: 'Sys', id: string, spaceId: string }, seoFields?: (
     { __typename?: 'ComponentSeo' }
     & SeoFieldsFragment
-  ) | null, featuredBlogPost?: (
-    { __typename?: 'PageBlogPost' }
-    & ReferencePageBlogPostFieldsFragment
+  ) | null, featuredReview?: (
+    { __typename?: 'PageGameReview' }
+    & ReferencePageGameReviewFieldsFragment
   ) | null };
 
 export type PageLandingQueryVariables = Exact<{
@@ -2609,8 +2609,8 @@ export const PageLandingFieldsFragmentDoc = gql`
   seoFields {
     ...SeoFields
   }
-  featuredBlogPost {
-    ...ReferencePageBlogPostFields
+  featuredReview {
+    ...ReferencePageGameReviewFields
   }
 }
     `;
@@ -2732,7 +2732,7 @@ export const PageLandingDocument = gql`
     ${PageLandingFieldsFragmentDoc}
 ${SeoFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
-${ReferencePageBlogPostFieldsFragmentDoc}
+${ReferencePageGameReviewFieldsFragmentDoc}
 ${AuthorFieldsFragmentDoc}`;
 export const PageLandingCollectionDocument = gql`
     query pageLandingCollection($locale: String, $preview: Boolean) {
@@ -2745,7 +2745,7 @@ export const PageLandingCollectionDocument = gql`
     ${PageLandingFieldsFragmentDoc}
 ${SeoFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
-${ReferencePageBlogPostFieldsFragmentDoc}
+${ReferencePageGameReviewFieldsFragmentDoc}
 ${AuthorFieldsFragmentDoc}`;
 export const SitemapPagesDocument = gql`
     query sitemapPages($locale: String!) {
