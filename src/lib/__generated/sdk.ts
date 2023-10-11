@@ -2325,10 +2325,16 @@ export type PageGameReviewFieldsFragment = { __typename: 'PageGameReview', inter
   ) | null, featuredImage?: (
     { __typename?: 'Asset' }
     & ImageFieldsFragment
-  ) | null, content?: { __typename?: 'PageGameReviewContent', json: any, links: { __typename?: 'PageGameReviewContentLinks', entries: { __typename?: 'PageGameReviewContentEntries', block: Array<{ __typename?: 'ComponentAuthor' } | { __typename?: 'ComponentRating' } | (
+  ) | null, ratingsCollection?: { __typename?: 'PageGameReviewRatingsCollection', items: Array<(
+      { __typename?: 'ComponentRating' }
+      & RatingFieldsFragment
+    ) | null> } | null, content?: { __typename?: 'PageGameReviewContent', json: any, links: { __typename?: 'PageGameReviewContentLinks', entries: { __typename?: 'PageGameReviewContentEntries', block: Array<{ __typename?: 'ComponentAuthor' } | { __typename?: 'ComponentRating' } | (
           { __typename?: 'ComponentRichImage' }
           & RichImageFieldsFragment
-        ) | { __typename?: 'ComponentSeo' } | { __typename?: 'PageBlogPost' } | { __typename?: 'PageGameReview' } | { __typename?: 'PageLanding' } | null> } } } | null };
+        ) | { __typename?: 'ComponentSeo' } | { __typename?: 'PageBlogPost' } | { __typename?: 'PageGameReview' } | { __typename?: 'PageLanding' } | null> } } } | null, relatedGameReviewsCollection?: { __typename?: 'PageGameReviewRelatedGameReviewsCollection', items: Array<(
+      { __typename?: 'PageGameReview' }
+      & ReferencePageGameReviewFieldsFragment
+    ) | null> } | null };
 
 export type PageGameReviewQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -2386,7 +2392,7 @@ export type PageLandingCollectionQuery = { __typename?: 'Query', pageLandingColl
       & PageLandingFieldsFragment
     ) | null> } | null };
 
-export type RatingFieldsFragment = { __typename: 'ComponentRating', title?: string | null, value?: number | null, sys: { __typename?: 'Sys', id: string } };
+export type RatingFieldsFragment = { __typename: 'ComponentRating', title?: string | null, value?: number | null };
 
 export type RichImageFieldsFragment = { __typename: 'ComponentRichImage', internalName?: string | null, caption?: string | null, fullWidth?: boolean | null, sys: { __typename?: 'Sys', id: string }, image?: (
     { __typename?: 'Asset' }
@@ -2522,6 +2528,13 @@ export const PageBlogPostFieldsFragmentDoc = gql`
   }
 }
     `;
+export const RatingFieldsFragmentDoc = gql`
+    fragment RatingFields on ComponentRating {
+  __typename
+  title
+  value
+}
+    `;
 export const ReferencePageGameReviewFieldsFragmentDoc = gql`
     fragment ReferencePageGameReviewFields on PageGameReview {
   __typename
@@ -2563,6 +2576,11 @@ export const PageGameReviewFieldsFragmentDoc = gql`
     ...ImageFields
   }
   verdict
+  ratingsCollection {
+    items {
+      ...RatingFields
+    }
+  }
   content {
     json
     links {
@@ -2571,6 +2589,11 @@ export const PageGameReviewFieldsFragmentDoc = gql`
           ...RichImageFields
         }
       }
+    }
+  }
+  relatedGameReviewsCollection(limit: 2) {
+    items {
+      ...ReferencePageGameReviewFields
     }
   }
 }
@@ -2589,16 +2612,6 @@ export const PageLandingFieldsFragmentDoc = gql`
   featuredBlogPost {
     ...ReferencePageBlogPostFields
   }
-}
-    `;
-export const RatingFieldsFragmentDoc = gql`
-    fragment RatingFields on ComponentRating {
-  __typename
-  sys {
-    id
-  }
-  title
-  value
 }
     `;
 export const SitemapPagesFieldsFragmentDoc = gql`
@@ -2684,7 +2697,9 @@ export const PageGameReviewDocument = gql`
 ${SeoFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${AuthorFieldsFragmentDoc}
-${RichImageFieldsFragmentDoc}`;
+${RatingFieldsFragmentDoc}
+${RichImageFieldsFragmentDoc}
+${ReferencePageGameReviewFieldsFragmentDoc}`;
 export const PageGameReviewCollectionDocument = gql`
     query pageGameReviewCollection($locale: String, $preview: Boolean, $limit: Int, $order: [PageGameReviewOrder], $where: PageGameReviewFilter) {
   pageGameReviewCollection(
@@ -2703,7 +2718,9 @@ export const PageGameReviewCollectionDocument = gql`
 ${SeoFieldsFragmentDoc}
 ${ImageFieldsFragmentDoc}
 ${AuthorFieldsFragmentDoc}
-${RichImageFieldsFragmentDoc}`;
+${RatingFieldsFragmentDoc}
+${RichImageFieldsFragmentDoc}
+${ReferencePageGameReviewFieldsFragmentDoc}`;
 export const PageLandingDocument = gql`
     query pageLanding($locale: String, $preview: Boolean) {
   pageLandingCollection(limit: 1, locale: $locale, preview: $preview) {
