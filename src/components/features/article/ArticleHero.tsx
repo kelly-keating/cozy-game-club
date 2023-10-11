@@ -1,27 +1,25 @@
-import { useContentfulInspectorMode } from '@contentful/live-preview/react';
-import { useTranslation } from 'next-i18next';
-import { twMerge } from 'tailwind-merge';
+import { useContentfulInspectorMode } from '@contentful/live-preview/react'
+import { twMerge } from 'tailwind-merge'
 
-import { ArticleAuthor } from '@src/components/features/article/ArticleAuthor';
-import { ArticleLabel } from '@src/components/features/article/ArticleLabel';
-import { CtfImage } from '@src/components/features/contentful';
-import { FormatDate } from '@src/components/shared/format-date';
-import { PageBlogPostFieldsFragment } from '@src/lib/__generated/sdk';
+import { ArticleAuthor } from '@src/components/features/article/ArticleAuthor'
+import { ArticleLabel } from '@src/components/features/article/ArticleLabel'
+import { CtfImage } from '@src/components/features/contentful'
+import { FormatDate } from '@src/components/shared/format-date'
+import { PageBlogPostFieldsFragment } from '@src/lib/__generated/sdk'
 
 interface ArticleHeroProps {
-  article: PageBlogPostFieldsFragment;
-  isFeatured?: boolean;
-  isReversedLayout?: boolean;
+  article: PageBlogPostFieldsFragment
+  isFeatured?: boolean
+  isReversedLayout?: boolean
 }
 export const ArticleHero = ({
   article,
   isFeatured,
   isReversedLayout = false,
 }: ArticleHeroProps) => {
-  const { t } = useTranslation();
-  const inspectorProps = useContentfulInspectorMode({ entryId: article.sys.id });
+  const inspectorProps = useContentfulInspectorMode({ entryId: article.sys.id })
 
-  const { title, shortDescription, publishedDate } = article;
+  const { title, shortDescription, publishedDate } = article
 
   return (
     <div
@@ -47,7 +45,7 @@ export const ArticleHero = ({
                 'ml-auto pl-2 lg:absolute lg:top-8 xl:top-12',
                 isReversedLayout ? 'lg:left-6 xl:left-12' : 'lg:right-6 xl:right-12',
               )}>
-              {t('article.featured')}
+              featured
             </ArticleLabel>
           )}
           <div
@@ -72,5 +70,5 @@ export const ArticleHero = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
